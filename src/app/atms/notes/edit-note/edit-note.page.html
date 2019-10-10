@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/atms/tabs/notes"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Edit Note for {{ note.lessonId }}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-button
+        margin
+        color="primary"
+        [routerLink]="[
+  '/',
+  'atms',
+  'tabs',
+  'notes'
+  ]"
+    >
+        Back to Notes
+    </ion-button>
+</ion-content>

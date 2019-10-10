@@ -1,0 +1,43 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="/atms/tabs/collections"></ion-back-button>
+        </ion-buttons>
+        <!-- <ion-buttons slot="end">
+            <ion-menu-button menu="m1"></ion-menu-button>
+        </ion-buttons> -->
+
+        <ion-title>{{collection.id}} Collection</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-grid>
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+                <ion-list>
+                    <ion-item
+                        *ngFor="let lesson of lessons"
+                        [routerLink]="['/','atms','tabs','collection', lesson.collectionId]"
+                    >
+                        <ion-label>
+                            {{lesson.lessonId}} >> {{lesson.lessonTitle}}
+                        </ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-button
+        color="primary"
+        margin
+        (click)="onCollectionClick()"
+    >
+        Back
+    </ion-button>
+</ion-content>
