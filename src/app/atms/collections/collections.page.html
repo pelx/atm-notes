@@ -8,7 +8,31 @@
 </ion-header>
 
 <ion-content>
-    <ion-grid>
+    <ion-segment
+        class="ion-padding"
+        (ionChange)="onFilterUpdate($event)"
+    >
+        <ion-segment-button
+            value="all"
+            checked
+        >
+            All Collections
+        </ion-segment-button>
+        <ion-segment-button value="filtered">Collections with Notes</ion-segment-button>
+    </ion-segment>
+
+    <ion-grid *ngIf="!relevantCollections || relevantCollections.length <=0 ">
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+                <p>There are no collections with Notes yet</p>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-grid *ngIf="relevantCollections.length>0">
         <ion-row>
             <ion-col
                 size="12"
@@ -16,23 +40,25 @@
                 offset-sm="2"
             >
                 <ion-card
-                    padding
+                    ion-padding
                     text-center
                 >
                     <ion-card-header>
-                        <ion-card-title>{{loadedCollections[0].title}}</ion-card-title>
+                        <ion-card-title>{{relevantCollections[0].title}}</ion-card-title>
                     </ion-card-header>
                     <ion-item>
                         <ion-img
                             class="img-show"
-                            [src]="loadedCollections[0].imageUrl"
+                            [src]="relevantCollections[0].imageUrl"
                         ></ion-img>
                     </ion-item>
                     <ion-card-content
                         color="dark"
                         text-left
                     >
-                        <p style="font-size: 60%">{{loadedCollections[0].description}}</p>
+                        <ion-item>
+                            <ion-label color="primary">{{relevantCollections[0].description}}</ion-label>
+                        </ion-item>
                     </ion-card-content>
                     <div>
                         <ion-button
@@ -44,7 +70,7 @@
                                 'atms', 
                                 'tabs',
                                 'collections',
-                                loadedCollections[0].id
+                                relevantCollections[0].id
                             ]"
                         >
                             Show Collection
@@ -62,7 +88,7 @@
             >
                 <ion-list>
                     <ion-item
-                        *ngFor="let collection of loadedCollections"
+                        *ngFor="let collection of relevantCollections"
                         [routerLink]="[
                                 '/',
                                 'atms', 

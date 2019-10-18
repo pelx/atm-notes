@@ -33,7 +33,7 @@ const routes: Routes = [
                         loadChildren: './notes/new-note/new-note.module#NewNotePageModule'
                     },
                     {
-                        path: 'edit/:lessonId',
+                        path: 'edit/:noteId',
                         loadChildren: './notes/edit-note/edit-note.module#EditNotePageModule'
                     },
                 ]

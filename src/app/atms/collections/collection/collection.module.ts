@@ -6,21 +6,23 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { CollectionPage } from './collection.page';
+import { LessonComponent } from './lesson/lesson.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: CollectionPage
-  }
+    {
+        path: '',
+        component: CollectionPage
+    }
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [CollectionPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild(routes)
+    ],
+    declarations: [CollectionPage, LessonComponent],
+    entryComponents: [LessonComponent]
 })
-export class CollectionPageModule {}
+export class CollectionPageModule { }

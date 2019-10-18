@@ -1,10 +1,16 @@
 import { Lesson } from './lesson';
 export class Note {
     constructor(
+        public noteId: string,
         public lessonId: string,
-        public rating: number,
+        public lessonTitle: string,
+        public collectionId: string,
+        public rating: string,
         public status: string,
-        public level: number,
-        public note: string
+        public level: string,
+        public note: string,
+        public createdOn: Date,
+        public updatedOn: Date,
+        public userId: string
     ) { }
 }

@@ -1,0 +1,25 @@
+<ion-header text-center>
+    <ion-toolbar>
+        <ion-title>{{selectedLesson.lessonId}} Lesson</ion-title>
+        <ion-buttons slot="primary">
+            <ion-fab-button (click)="onCancel()">
+                <ion-icon name="close"></ion-icon>
+            </ion-fab-button>
+
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content
+    text-center
+    padding
+>
+    <p>{{selectedLesson.lessonTitle}}</p>
+    <ion-button
+        color="primary"
+        (click)="onPlay()"
+    >
+        Play
+        <ion-icon name="musical-notes"></ion-icon>
+    </ion-button>
+</ion-content>

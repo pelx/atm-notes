@@ -22,22 +22,24 @@
                 <ion-list>
                     <ion-item
                         *ngFor="let lesson of lessons"
-                        [routerLink]="['/','atms','tabs','collection', lesson.collectionId]"
+                        [routerLink]="['/','atms','tabs','collections', lesson.collectionId]"
                     >
-                        <ion-label>
-                            {{lesson.lessonId}} >> {{lesson.lessonTitle}}
-                        </ion-label>
+                        <ion-chip color="secondary">
+                            <ion-avatar>{{lesson.lessonId}}</ion-avatar>
+                        </ion-chip>
+                        <ion-label>{{lesson.lessonTitle}}</ion-label>
+                        <ion-fab-button
+                            color="secondary"
+                            margin
+                            (click)="onCollectionClick(lesson)"
+                        >
+                            <ion-icon name="musical-note"></ion-icon>
+                        </ion-fab-button>
+
                     </ion-item>
                 </ion-list>
             </ion-col>
         </ion-row>
     </ion-grid>
 
-    <ion-button
-        color="primary"
-        margin
-        (click)="onCollectionClick()"
-    >
-        Back
-    </ion-button>
 </ion-content>
