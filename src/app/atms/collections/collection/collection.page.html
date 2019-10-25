@@ -7,11 +7,85 @@
             <ion-menu-button menu="m1"></ion-menu-button>
         </ion-buttons> -->
 
-        <ion-title>{{collection.id}} Collection</ion-title>
+        <ion-title>{{collection.title}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <ion-grid class="ion-no-padding">
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+
+                <table
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="mat-elevation-z8"
+                    matSort
+                >
+
+                    <ng-container matColumnDef="lessonId">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header
+                            class="lessonId"
+                        >
+                            Lesson
+                        </th>
+                        <td
+                            class="lessonId"
+                            mat-cell
+                            *matCellDef="let lesson"
+                        >
+                            {{lesson.lessonId}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lessonTitle">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            mat-sort-header
+                        >
+                            Title
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let lesson"
+                        >
+                            {{lesson.lessonTitle}}
+                        </td>
+                    </ng-container>
+
+                    <tbody>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                            sticky
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns;"
+                        ></tr>
+
+                    </tbody>
+                </table>
+
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
+
+<mat-paginator
+    [pageSizeOptions]="[10, 20, 50]"
+    showFirstLastButtons
+></mat-paginator>
+
+<!-- <ion-content>
     <ion-grid>
         <ion-row>
             <ion-col
@@ -30,7 +104,7 @@
                         <ion-label>{{lesson.lessonTitle}}</ion-label>
                         <ion-fab-button
                             color="secondary"
-                            margin
+                            class="ion-margin"
                             (click)="onCollectionClick(lesson)"
                         >
                             <ion-icon name="musical-note"></ion-icon>
@@ -42,4 +116,4 @@
         </ion-row>
     </ion-grid>
 
-</ion-content>
+</ion-content> -->

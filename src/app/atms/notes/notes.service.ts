@@ -22,40 +22,9 @@ interface NoteData {
     providedIn: 'root'
 })
 export class NotesService {
-    private notesUrl: 'https://atm-notes.firebaseio.com/notes';
+    private notesUrl = 'https://atm-notes.firebaseio.com/notes';
     private _notes = new BehaviorSubject<Note[]>([]);
 
-    // private _notes = new BehaviorSubject<Note[]>([
-    //     new Note(
-    //         '1',
-    //         'AY 001',
-    //         'Bending the head to the side while sitting',
-    //         'AY',
-    //         1,
-    //         'Y',
-    //         3,
-    //         'Bending the head to the side while sitting',
-    //         new Date('2019-01-01'),
-    //         new Date('2019-10-01'),
-    //         '1'
-
-    //     ),
-    //     new Note(
-    //         '2',
-    //         'AY 002',
-    //         'Seeing the heels',
-    //         'AY',
-    //         1,
-    //         'Y',
-    //         3,
-    //         'Seeing the heels',
-    //         new Date('2019-01-01'),
-    //         new Date('2019-10-01'),
-    //         '1'
-    //     )
-    // ]);
-    // private _notes: Note[] = [
-    // ];
 
     constructor(
         private authService: AuthService,
@@ -70,9 +39,14 @@ export class NotesService {
     }
 
     fetchNotesByUser() {
-        return this.http
-            .get<{ [key: string]: NoteData }>(`https://atm-notes.firebaseio.com/notes.json?orderBy="userId"&&equalTo="${this.authService.userId}"`
-            ).pipe(map(resData => {
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                return this.http
+                    .get<{ [key: string]: NoteData }>(`${this.notesUrl}.json?auth=${token}orderBy="userId"&&equalTo="${this.authService.userId}"`
+                    );
+            }),
+            map(resData => {
                 const notes: any = [];
                 for (const key in resData) {
                     if (resData.hasOwnProperty(key)) {
@@ -94,71 +68,69 @@ export class NotesService {
                 }
                 return notes;
             }),
-                tap(notes => {
-                    this._notes.next(notes);
-                })
-            );
+            tap(notes => {
+                this._notes.next(notes);
+            })
+        );
     }
 
 
     fetchNotes() {
-        // GET
-        return this.http
-            .get<{ [key: string]: NoteData }>('https://atm-notes.firebaseio.com/notes.json')
-            .pipe(
-                map(resData => {
-                    const notes = [];
-                    for (const key in resData) {
-                        if (resData.hasOwnProperty(key)) {
-                            notes.push(new Note(
-                                key,
-                                resData[key].lessonId,
-                                resData[key].lessonTitle,
-                                resData[key].collectionId,
-                                +resData[key].rating,
-                                resData[key].status,
-                                +resData[key].level,
-                                resData[key].note,
-                                new Date(resData[key].createdOn),
-                                new Date(resData[key].updatedOn),
-                                resData[key].userId
-                            ))
-                        }
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                // GET
+                return this.http
+                    .get<{ [key: string]: NoteData }>(`${this.notesUrl}.json?auth=${token}`)
+            }),
+            map(resData => {
+                const notes = [];
+                for (const key in resData) {
+                    if (resData.hasOwnProperty(key)) {
+                        notes.push(new Note(
+                            key,
+                            resData[key].lessonId,
+                            resData[key].lessonTitle,
+                            resData[key].collectionId,
+                            resData[key].rating,
+                            resData[key].status,
+                            resData[key].level,
+                            resData[key].note,
+                            new Date(resData[key].createdOn),
+                            new Date(resData[key].updatedOn),
+                            resData[key].userId
+                        ))
                     }
-                    // return [];
-                    return notes;
-                }),
-                tap(notes => {
-                    this._notes.next(notes);
-                })
-            );
+                }
+                // return [];
+                return notes;
+            }),
+            tap(notes => {
+                this._notes.next(notes);
+            })
+        );
     }
 
     getNote(noteId: string) {
-        return this.http.get<NoteData>(`https://atm-notes.firebaseio.com/notes/${noteId}.json`)
-            .pipe(
-                map(noteData => {
-                    return new Note(noteId,
-                        noteData.lessonTitle,
-                        noteData.lessonId,
-                        noteData.collectionId,
-                        noteData.rating,
-                        noteData.status,
-                        noteData.level,
-                        noteData.note,
-                        new Date(noteData.createdOn),
-                        new Date(noteData.updatedOn),
-                        noteData.userId)
-                }))
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                return this.http.get<NoteData>(`${this.notesUrl}/${noteId}.json?auth=${token}`)
+            }),
+            map(noteData => {
+                return new Note(noteId,
+                    noteData.lessonTitle,
+                    noteData.lessonId,
+                    noteData.collectionId,
+                    noteData.rating,
+                    noteData.status,
+                    noteData.level,
+                    noteData.note,
+                    new Date(noteData.createdOn),
+                    new Date(noteData.updatedOn),
+                    noteData.userId)
+            }))
     }
-
-    // getNote(noteId: string) {
-    //     return this.notes.pipe(
-    //         take(1),
-    //         map(notes => {
-    //             return { ...notes.find(n => n.noteId === noteId) };
-    //         }));
-    // }
 
     addNote(
         lessonTitle: string,
@@ -170,43 +142,49 @@ export class NotesService {
         note: string
     ) {
         let generatedId: string;
-        const newNote = new Note(
-            Math.random().toString(),
-            lessonTitle,
-            lessonId,
-            collectionId,
-            rating,
-            status,
-            level,
-            note,
-            new Date(),
-            new Date(),
-            this.authService.userId
-        );
-        // POST
-        return this.http.post<{ name: string }>('https://atm-notes.firebaseio.com/notes.json', {
-            ...newNote, noteId: null
-        })
-            .pipe(
-                switchMap(resData => {
-                    generatedId = resData.name; //id generated by Firebase
-                    return this.notes
-                }),
-                take(1),
-                tap(notes => {
-                    newNote.noteId = generatedId;
-                    this._notes.next(notes.concat(newNote));
-                })
+        let fetchedUserId: string;
+        let newNote: Note;
+        return this.authService.userId.pipe(
+            take(1),
+            switchMap(userId => {
+                if (!userId) {
+                    throw new Error('No User Id found');
+                }
+                fetchedUserId = userId;
+                return this.authService.token;
+            }),
+            take(1),
+            switchMap(token => {
+                newNote = new Note(
+                    Math.random().toString(),
+                    lessonTitle,
+                    lessonId,
+                    collectionId,
+                    rating,
+                    status,
+                    level,
+                    note,
+                    new Date(),
+                    new Date(),
+                    fetchedUserId
+                );
+                console.log(`${this.notesUrl}.json?auth=${token}`);
+                return this.http
+                    .post<{ name: string }>(
+                        `${this.notesUrl}.json?auth=${token}`,
+                        { ...newNote, noteId: null }
+                    );
+            }),
+            switchMap(resData => {
+                generatedId = resData.name; //id generated by Firebase
+                return this.notes
+            }),
+            take(1),
+            tap(notes => {
+                newNote.noteId = generatedId;
+                this._notes.next(notes.concat(newNote));
+            }))
 
-            );
-        // return this.notes.pipe(
-        //     take(1),
-        //     delay(1500),
-        //     tap(notes => {
-        //         this._notes.next(notes.concat(newNote));
-        //     })
-        // );
-        // this._notes.push(newNote);
     }
 
     updateNote(
@@ -217,7 +195,13 @@ export class NotesService {
         note: string
     ) {
         let updNotes: Note[];
-        return this.notes.pipe(
+        let fetchedToken: string;
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                fetchedToken = token;
+                return this.notes;
+            }),
             take(1),
             switchMap(notes => {
                 // ensure notes were fetched
@@ -248,7 +232,7 @@ export class NotesService {
                 );
                 return this
                     .http
-                    .put(`https://atm-notes.firebaseio.com/notes/${noteId}.json`,
+                    .put(`${this.notesUrl}/${noteId}.json?auth=${fetchedToken}`,
                         { ...updNotes[updNoteIndex], id: null });
 
             }),
@@ -256,51 +240,23 @@ export class NotesService {
                 console.log(resData);
                 this._notes.next(updNotes);
             }))
-        // return this.notes.pipe(
-        //     take(1),
-        //     delay(1500),
-        //     tap(notes => {
-        //         const updNoteIndex = notes.findIndex(n => n.noteId === noteId);
-        //         const updNotes = [...notes];
-        //         const oldNote = updNotes[updNoteIndex];
-        //         updNotes[updNoteIndex] = new Note(
-        //             oldNote.noteId,
-        //             lessonId,
-        //             oldNote.lessonTitle,
-        //             oldNote.collectionId,
-        //             oldNote.rating,
-        //             oldNote.status,
-        //             oldNote.level,
-        //             note,
-        //             oldNote.createdOn,
-        //             new Date(),
-        //             oldNote.userId
-        //         );
-        //         this._notes.next(updNotes);
-        //     })
-        // );
     }
 
     deleteNote(noteId: string) {
-        return this.http.delete<NoteData>(`https://atm-notes.firebaseio.com/notes/${noteId}.json`)
-            .pipe(
-                switchMap(() => {
-                    return this.notes;
-                }),
-                take(1),
-                tap(notes => {
-                    this._notes.next(notes.filter(note => note.noteId !== noteId));
-                })
-            );
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                return this.http
+                    .delete<NoteData>(`${this.notesUrl}/${noteId}.json?auth=${token}`)
+            }),
+            switchMap(() => {
+                return this.notes;
+            }),
+            take(1),
+            tap(notes => {
+                this._notes.next(notes.filter(note => note.noteId !== noteId));
+            })
+        );
     }
 
-    // deleteNote(noteId: string) {
-    //     return this.notes.pipe(
-    //         take(1),
-    //         delay(1500),
-    //         tap(notes => {
-    //             this._notes.next(notes.filter(note => note.noteId !== noteId));
-    //         })
-    //     );
-    // }
 }

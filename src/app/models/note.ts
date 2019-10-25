@@ -1,4 +1,3 @@
-import { Lesson } from './lesson';
 export class Note {
     constructor(
         public noteId: string,
