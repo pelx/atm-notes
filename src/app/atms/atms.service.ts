@@ -17,22 +17,8 @@ interface LessonData {
     providedIn: 'root'
 })
 export class AtmsService {
-    private _lessons = new BehaviorSubject<Lesson[]>(
-        [
-            // new Lesson(
-            //     '1',
-            //     'AY 001',
-            //     'AY',
-            //     'Bending the head to the side while sitting'
-            // ),
-            // new Lesson(
-            //     '2',
-            //     'AY 002',
-            //     'AY',
-            //     'Seeing the heels'
-            // )
-        ]
-    );
+    private lessonsUrl = "https://atm-notes.firebaseio.com/lessons";
+    private _lessons = new BehaviorSubject<Lesson[]>([]);
 
     constructor(
         private authService: AuthService,
@@ -79,6 +65,36 @@ export class AtmsService {
                 return lessons.find(l => l.collectionId === id);
             }));
         //  return {...this._lessons.filter(lesson => lesson.collectionId === id)};
+    }
+
+    fetchLessonsByCollectionId(id: string) {
+        return this.authService.token.pipe(
+            take(1),
+            switchMap(token => {
+                return this.http
+                    .get<{ [key: string]: LessonData }>(`${this.lessonsUrl}.json?orderBy="collectionId"&equalTo="${id}"&&auth=${token}`)
+                    .pipe(map(resData => {
+                        const lessons = [];
+                        for (const key in resData) {
+                            if (resData.hasOwnProperty(key)) {
+                                lessons.push(new Lesson(
+                                    key,
+                                    resData[key].lessonId,
+                                    resData[key].collectionId,
+                                    resData[key].lessonTitle
+                                ));
+                            }
+                        }
+
+                        return lessons;
+                    }),
+                        tap(lessons => {
+                            this._lessons.next(lessons);
+                        })
+                    );
+            })
+        );
+
     }
 
     addLesson(

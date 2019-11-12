@@ -37,14 +37,13 @@
             </ion-row>
             <ion-row>
                 <ion-col
-                    no-padding
+                    class="ion-no-padding"
                     size-sm="1"
                     offset-sm="3"
                 >
                     <ion-item>
                         <ion-input
                             color="primary"
-                            value="001"
                             readonly
                             formControlName="lessonId"
                             max="10"
@@ -53,7 +52,7 @@
                 </ion-col>
                 <ion-col
                     size-sm="5"
-                    no-padding
+                    class="ion-no-padding"
                 >
                     <ion-item>
                         <ion-input
@@ -80,7 +79,6 @@
                         </ion-label>
                         <ion-select
                             interface="popover"
-                            [ngModel]="'New'"
                             formControlName="status"
                         >
                             <ion-select-option value="New">New</ion-select-option>
@@ -103,13 +101,12 @@
                         </ion-label>
                         <ion-select
                             interface="popover"
-                            [ngModel]="'New'"
                             formControlName="level"
                         >
                             <ion-select-option value="1">Easy</ion-select-option>
                             <ion-select-option value="2">Intermidiate</ion-select-option>
                             <ion-select-option value="3">Advanced</ion-select-option>
-                            <ion-select-option value="2">Expert</ion-select-option>
+                            <ion-select-option value="4">Expert</ion-select-option>
                         </ion-select>
                     </ion-item>
                 </ion-col>
@@ -124,17 +121,17 @@
                             color="primary"
                             position="floating"
                         >
-                            Rating
+                            Position
                         </ion-label>
                         <ion-select
                             interface="popover"
-                            [ngModel]="'New'"
-                            formControlName="rating"
+                            formControlName="position"
                         >
-                            <ion-select-option value="1">Good</ion-select-option>
-                            <ion-select-option value="2">Excellent</ion-select-option>
-                            <ion-select-option value="3">Pussle</ion-select-option>
-                            <ion-select-option value="4">Impossible</ion-select-option>
+                            <ion-select-option value="1">Back</ion-select-option>
+                            <ion-select-option value="2">Front</ion-select-option>
+                            <ion-select-option value="3">Side-strait</ion-select-option>
+                            <ion-select-option value="4">Side-chair</ion-select-option>
+                            <ion-select-option value="5">Side-kneel</ion-select-option>
                         </ion-select>
                     </ion-item>
                 </ion-col>

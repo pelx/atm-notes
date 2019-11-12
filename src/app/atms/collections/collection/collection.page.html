@@ -7,12 +7,43 @@
             <ion-menu-button menu="m1"></ion-menu-button>
         </ion-buttons> -->
 
-        <ion-title>{{collection.title}}</ion-title>
+        <ion-title *ngIf="!isLoading && collection">{{collection.title}}</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-grid class="ion-no-padding">
+    <ion-grid *ngIf="isLoading">
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+                <ion-spinner></ion-spinner>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <ion-grid
+        class="ion-no-padding"
+        *ngIf="!isLoading && lessons && lessons.length>0"
+    >
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+                <mat-form-field>
+                    <input
+                        matInput
+                        (keyup)="applyFilter($event.target.value)"
+                        placeholder="Filter"
+                    >
+                </mat-form-field>
+
+            </ion-col>
+        </ion-row>
         <ion-row>
             <ion-col
                 size="12"
@@ -29,10 +60,9 @@
 
                     <ng-container matColumnDef="lessonId">
                         <th
+                            mat-sort-header
                             mat-header-cell
                             *matHeaderCellDef
-                            mat-sort-header
-                            class="lessonId"
                         >
                             Lesson
                         </th>
@@ -47,9 +77,9 @@
 
                     <ng-container matColumnDef="lessonTitle">
                         <th
+                            mat-sort-header
                             mat-header-cell
                             *matHeaderCellDef
-                            mat-sort-header
                         >
                             Title
                         </th>
@@ -58,6 +88,29 @@
                             *matCellDef="let lesson"
                         >
                             {{lesson.lessonTitle}}
+                        </td>
+                    </ng-container>
+                    <!-- Action -->
+                    <ng-container matColumnDef="action">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let lesson"
+                        >
+                            <ion-button
+                                size="small"
+                                fill="clear"
+                                class="ion-no-padding action"
+                                color="secondary"
+                                class="ion-margin"
+                                (click)="onCollectionClick(lesson)"
+                            >
+                                <ion-icon name="clipboard"></ion-icon>
+                            </ion-button>
                         </td>
                     </ng-container>
 
@@ -81,7 +134,7 @@
 </ion-content>
 
 <mat-paginator
-    [pageSizeOptions]="[10, 20, 50]"
+    [pageSizeOptions]="[50, 20, 10]"
     showFirstLastButtons
 ></mat-paginator>
 

@@ -69,7 +69,7 @@ export class AuthPage implements OnInit {
                             const errCode = errorRes.error.error.message;
                             let message = '';
                             if (errCode === 'EMAIL_EXISTS') {
-                                message = 'This Email exists already.';
+                                message = 'This Email already exists!';
                                 this.showAlert(message);
                             } else if (errCode === 'EMAIL_NOT_FOUND') {
                                 message = 'The Email address was not found.';

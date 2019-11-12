@@ -18,7 +18,6 @@ export class User {
             return 0;
         }
         const duration = this.tokenExpiryDate.getTime() - new Date().getTime();
-        console.log('duration:', duration);
         return duration;
     }
 }

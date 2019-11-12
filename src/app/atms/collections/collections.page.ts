@@ -12,21 +12,35 @@ import { Subscription } from 'rxjs';
 })
 export class CollectionsPage implements OnInit, OnDestroy {
     private subs: Subscription;
+    isLoading = false;
     loadedCollections: Collection[];
     relevantCollections: Collection[];
+    listedCollections: Collection[];
 
     constructor(
         private collectionsService: CollectionsService,
     ) { }
 
     ngOnInit() {
-        // this.loadedCollections = this.collectionsService.collections;
-        this.subs = this.collectionsService.collections
-            .subscribe(cols => {
-                this.loadedCollections = cols
-            });
+        // this.isLoading = true;
+        // this.subs = this.collectionsService.collections
+        //     .subscribe(cols => {
+        //         this.loadedCollections = cols;
+        //         this.relevantCollections = this.loadedCollections;
+        //         this.listedCollections = this.loadedCollections.slice(1);
+        //         this.isLoading = false;
+        //     });
 
-        this.relevantCollections = this.loadedCollections;
+    }
+
+    ionViewWillEnter() {
+        this.isLoading = true;
+        this.subs = this.collectionsService.fetchCollections().subscribe(cols => {
+            this.loadedCollections = cols;
+            this.relevantCollections = this.loadedCollections;
+            this.listedCollections = this.loadedCollections.slice(1);
+            this.isLoading = false;
+        });
     }
 
     onOpenMenu() {
@@ -40,7 +54,7 @@ export class CollectionsPage implements OnInit, OnDestroy {
             this.relevantCollections = [];
             // TODO: .filter(collection => false}
         }
-        console.log(event.detail);
+        // console.log(event.detail);
     }
     ngOnDestroy() {
         if (this.subs) this.subs.unsubscribe();

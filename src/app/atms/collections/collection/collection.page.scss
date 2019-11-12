@@ -5,11 +5,7 @@ table {
 
 th, td {
   overflow: hidden;
-  width: 200px;
+  // width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.lessonId {
-  width: 15%
 }

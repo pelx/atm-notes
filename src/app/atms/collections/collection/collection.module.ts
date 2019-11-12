@@ -25,6 +25,6 @@ const routes: Routes = [
         MaterialModule
     ],
     declarations: [CollectionPage, LessonComponent],
-    entryComponents: [LessonComponent]
+    entryComponents: [LessonComponent],
 })
 export class CollectionPageModule { }

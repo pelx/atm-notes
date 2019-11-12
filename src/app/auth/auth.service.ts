@@ -20,7 +20,7 @@ export interface AuthResponseData {
     providedIn: 'root'
 })
 export class AuthService implements OnDestroy {
-    private user = new BehaviorSubject<User>(null);
+    private _user = new BehaviorSubject<User>(null);
     private activeLogoutTimer: any;
     // private _userId = null;
     // private _token = null;
@@ -31,8 +31,21 @@ export class AuthService implements OnDestroy {
 
     constructor(private http: HttpClient) { }
 
+    get userIsAuthenticated() {
+        return this._user.asObservable()
+            .pipe(
+                map(user => {
+                    if (user) {
+                        return !!user.token;// force convertion to boolean
+                    } else {
+                        return false;
+                    }
+                })
+            );
+    }
+
     get userId() {
-        return this.user.asObservable()
+        return this._user.asObservable()
             .pipe(
                 map(user => {
                     if (user) {
@@ -45,7 +58,7 @@ export class AuthService implements OnDestroy {
     }
 
     get token() {
-        return this.user.asObservable()
+        return this._user.asObservable()
             .pipe(
                 map(user => {
                     if (user) {
@@ -57,21 +70,7 @@ export class AuthService implements OnDestroy {
             );
     }
 
-    get userIsAuthenticated() {
-        return this.user.asObservable()
-            .pipe(
-                map(user => {
-                    if (user) {
-                        return !!user.token;// force convertion to boolean
-                    } else {
-                        return false;
-                    }
-                })
-            );
-    }
-
     signup(email: string, password: string) {
-        console.log('SIGNUP:', email, password);
         return this.http.post<AuthResponseData>(`${this.signupUrl}${environment.firebaseAPIKey}`,
             {
                 email: email,
@@ -81,14 +80,13 @@ export class AuthService implements OnDestroy {
         )
             .pipe(
                 tap(
-                    this.setUserData
-                        .bind(this) // this refers to auth service class not tap function!!!
+                    // this refers to auth service class not tap function!!!
+                    this.setUserData.bind(this)
                 )
             );
     }
 
     login(email: string, password: string) {
-        console.log('LOGIN:', email, password);
         return this.http
             .post<AuthResponseData>(`${this.signinUrl}${environment.firebaseAPIKey}`,
                 {
@@ -98,8 +96,7 @@ export class AuthService implements OnDestroy {
                 }
             )
             .pipe(
-                tap(this.setUserData
-                    .bind(this)
+                tap(this.setUserData.bind(this)
                 )
             );
         //bind data to the class, pass reference to the method??
@@ -109,21 +106,15 @@ export class AuthService implements OnDestroy {
         if (this.activeLogoutTimer) {
             clearTimeout(this.activeLogoutTimer);
         }
-        this.user.next(null);
+        this._user.next(null);
         Plugins.Storage.remove({ key: 'authData' });
     }
 
-    ngOnDestroy() {
-        if (this.activeLogoutTimer) {
-            clearTimeout(this.activeLogoutTimer);
-        }
-    }
-
     autoLogin() {
+        // turn promise into observable
         return from(Plugins.Storage.get({ key: 'authData' }))
             .pipe(
                 map(storedData => {
-                    // console.log('AUTO LOGIN STORED DATA:', storedData.value);
                     if (!storedData || !storedData.valueOf()) {
                         return null;
                     }
@@ -144,13 +135,12 @@ export class AuthService implements OnDestroy {
                         parsedData.token,
                         expiryTime
                     );
-                    console.log('USER DATE:', parsedData.tokenExpiryDate)
                     return user;
                 }),
                 // emimit user
                 tap(user => {
                     if (user) {
-                        this.user.next(user);
+                        this._user.next(user);
                         this.autoLogout(user.tokenDuration);
                     }
                 }),
@@ -159,16 +149,6 @@ export class AuthService implements OnDestroy {
                     return !!user;
                 })
             );
-    }
-
-    private autoLogout(duration: number) {
-        console.log('AUTO LOGOUT DURATION:', duration);
-        if (this.activeLogoutTimer) {
-            clearTimeout(this.activeLogoutTimer);
-        }
-        this.activeLogoutTimer = setTimeout(() => {
-            this.logout();
-        }, duration)
     }
 
     private setUserData(userData: AuthResponseData) {
@@ -180,7 +160,7 @@ export class AuthService implements OnDestroy {
             userData.email,
             userData.idToken,
             expiryTime);
-        this.user.next(user);
+        this._user.next(user);
         this.autoLogout(user.tokenDuration);
         // Store data in local storage
         this.storeAuthData(
@@ -201,7 +181,7 @@ export class AuthService implements OnDestroy {
             tokenExpiryDate: tokenExpiryDate,
             email: email
         });
-        console.log('STORE AUTH DATA:', data);
+        // console.log('STORE AUTH DATA:', data);
 
         Plugins.Storage.set({
             key: 'authData',
@@ -209,4 +189,18 @@ export class AuthService implements OnDestroy {
         });
     }
 
+    private autoLogout(duration: number) {
+        if (this.activeLogoutTimer) {
+            clearTimeout(this.activeLogoutTimer);
+        }
+        this.activeLogoutTimer = setTimeout(() => {
+            this.logout();
+        }, duration)
+    }
+
+    ngOnDestroy() {
+        if (this.activeLogoutTimer) {
+            clearTimeout(this.activeLogoutTimer);
+        }
+    }
 }

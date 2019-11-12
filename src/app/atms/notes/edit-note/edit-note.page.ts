@@ -5,16 +5,18 @@ import { NavController, LoadingController, AlertController } from '@ionic/angula
 import { NotesService } from '../notes.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 @Component({
     selector: 'app-edit-note',
     templateUrl: './edit-note.page.html',
     styleUrls: ['./edit-note.page.scss'],
+    providers: [Location, { provide: LocationStrategy, useClass: PathLocationStrategy }]
 })
-export class EditNotePage implements OnInit {
+export class EditNotePage implements OnInit, OnDestroy {
+    private subs: Subscription;
     note: Note;
     form: FormGroup;
-    private subs: Subscription;
     isLoading = false;
     noteId: string;
 
@@ -24,27 +26,29 @@ export class EditNotePage implements OnInit {
         private notesServise: NotesService,
         private router: Router,
         private loadingCtrl: LoadingController,
-        private alertCtrl: AlertController
+        private alertCtrl: AlertController,
+        private location: Location
     ) { }
 
     ngOnInit() {
         this.route.paramMap.subscribe(param => {
             if (!param.has('noteId')) {
-                this.navCtrl.navigateBack('/atms/tabs/notes');
+                // this.navCtrl.navigateBack('/atms/tabs/notes');
+                this.location.back();
                 return;
             }
             this.noteId = param.get('noteId');
             this.isLoading = true;
 
-            this.notesServise.getNote(this.noteId)
+            this.subs = this.notesServise.getNote(this.noteId)
                 .subscribe(note => {
-                    console.log(note)
+                    // console.log(note)
                     this.note = note;
                     this.form = new FormGroup({
                         lessonTitle: new FormControl(this.note.lessonTitle),
                         lessonId: new FormControl(this.note.lessonId),
                         collectionId: new FormControl(this.note.collectionId),
-                        rating: new FormControl(this.note.rating, {
+                        position: new FormControl(this.note.position, {
                             updateOn: 'blur',
                             validators: [Validators.required]
                         }),
@@ -66,11 +70,12 @@ export class EditNotePage implements OnInit {
                     error => {
                         this.alertCtrl.create({
                             header: 'An error occured!',
-                            message: 'Notes couldnot be fetched. Please try again later',
+                            message: 'Note could not be fetched. Please try again later',
                             buttons: [{
                                 text: 'Okay',
                                 handler: () => {
-                                    this.router.navigate(['/atms/tabs/notes']);
+                                    // this.router.navigate(['/atms/tabs/notes']);
+                                    this.location.back();
                                 }
                             }]
                         }).then(alertEl => {
@@ -91,12 +96,13 @@ export class EditNotePage implements OnInit {
         })
             .then(loadingEl => {
                 loadingEl.present();
-                this.notesServise.updateNote(
-                    this.note.noteId,
-                    this.form.value.rating,
-                    this.form.value.status,
-                    this.form.value.level,
-                    this.form.value.note)
+                this.notesServise
+                    .updateNote(
+                        this.note.noteId,
+                        this.form.value.position,
+                        this.form.value.status,
+                        this.form.value.level,
+                        this.form.value.note)
                     .subscribe(() => {
                         loadingEl.dismiss();
                         this.form.reset();
@@ -104,6 +110,10 @@ export class EditNotePage implements OnInit {
                     });
 
             })
+    }
+
+    ngOnDestroy() {
+        if (this.subs) this.subs.unsubscribe();
     }
 
 }

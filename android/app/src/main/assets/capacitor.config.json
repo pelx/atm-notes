@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "atm-notes",
+  "appId": "com.atmovement.atmnotes",
+  "appName": "atmnotes",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www"

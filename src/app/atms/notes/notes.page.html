@@ -8,7 +8,7 @@
         </ion-buttons>
         <ion-title>My ATMs Notes</ion-title>
         <ion-buttons slot="primary">
-            <ion-button routerLink="/atms/tabs/notes/new">
+            <ion-button routerLink="/atms/tabs/collections">
                 <ion-icon
                     name="add"
                     slot="icon-only"
@@ -26,13 +26,13 @@
                 size-sm="8"
                 offset-sm="2"
                 *ngIf="!isLoading && (!loadedNotes || loadedNotes.length <= 0)"
-                text-center
+                class="ion-text-center"
             >
                 <div>
                     <p>No Notes Yet!</p>
                     <ion-button
                         color="primary"
-                        [routerLink]="['/atms/tabs/notes/new']"
+                        [routerLink]="['/atms/tabs/collections']"
                     >
                         Create a New Note
                     </ion-button>
@@ -51,32 +51,152 @@
                 >
                     <ion-spinner color="primary">Loading Your Notes</ion-spinner>
                 </div>
-                <ion-list *ngIf="!isLoading && (loadedNotes && loadedNotes.length > 0)">
-                    <ion-item-sliding
-                        side="end"
-                        *ngFor="let note of loadedNotes"
-                        #slidingItem
-                    >
-                        <ion-item [routerLink]="['/','atms','tabs','notes','edit', note.noteId]">
-                            <ion-label>
-                                {{note.collectionId}} | {{note.lessonId}} | {{note.lessonTitle}}
-                            </ion-label>
-                        </ion-item>
-                        <ion-item-options>
-                            <ion-item-option
-                                color="danger"
-                                (click)="onDelete(note.noteId, slidingItem)"
-                            >
-                                <ion-icon
-                                    name="trash"
-                                    slot="top"
-                                ></ion-icon>
-                                Delete
-                            </ion-item-option>
-                        </ion-item-options>
-                    </ion-item-sliding>
-                </ion-list>
+
             </ion-col>
         </ion-row>
     </ion-grid>
+
+    <ion-grid
+        class="ion-no-padding"
+        *ngIf="!isLoading && loadedNotes && loadedNotes.length>0"
+    >
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+                <mat-form-field>
+                    <input
+                        matInput
+                        (keyup)="applyFilter($event.target.value)"
+                        placeholder="Filter"
+                    >
+                </mat-form-field>
+
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col
+                size="12"
+                size-sm="8"
+                offset-sm="2"
+            >
+
+                <table
+                    mat-table
+                    [dataSource]="dataSource"
+                    class="mat-elevation-z8"
+                    matSort
+                >
+                    <ng-container matColumnDef="lessonId">
+                        <th
+                            mat-sort-header
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Lesson
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let note"
+                        >
+                            {{note.lessonId}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="lessonTitle">
+                        <th
+                            mat-sort-header
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Title
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let note"
+                        >
+                            {{note.lessonTitle}}
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                        >
+                            Edit/Delete
+                        </th>
+                        <td
+                            mat-cell
+                            *matCellDef="let note"
+                        >
+                            <ion-button
+                                class="ion-no-padding"
+                                size="small"
+                                fill="clear"
+                                color="secondary"
+                                (click)="onClick(note.noteId)"
+                            >
+                                <ion-icon name="clipboard"></ion-icon>
+                            </ion-button>
+                            <ion-button
+                                size="small"
+                                fill="clear"
+                                class="ion-no-padding"
+                                color="danger"
+                                (click)="onDelete(note.noteId)"
+                            >
+                                <ion-icon name="trash"></ion-icon>
+                            </ion-button>
+
+                        </td>
+                    </ng-container>
+
+                    <tbody>
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumns"
+                            sticky
+                        ></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: displayedColumns;"
+                        ></tr>
+
+                    </tbody>
+                </table>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <mat-paginator
+        [pageSizeOptions]="[3, 5, 10]"
+        showFirstLastButtons
+    ></mat-paginator>
 </ion-content>
+
+<!-- <ion-list *ngIf="!isLoading && (loadedNotes && loadedNotes.length > 0)">
+        <ion-item-sliding
+            side="end"
+            *ngFor="let note of loadedNotes"
+            #slidingItem
+        >
+            <ion-item [routerLink]="['/','atms','tabs','notes','edit', note.noteId]">
+                <ion-label>
+                    {{note.collectionId}} | {{note.lessonId}} | {{note.lessonTitle}}
+                </ion-label>
+            </ion-item>
+            <ion-item-options>
+                <ion-item-option
+                    color="danger"
+                    (click)="onDelete(note.noteId, slidingItem)"
+                >
+                    <ion-icon
+                        name="trash"
+                        slot="top"
+                    ></ion-icon>
+                    Delete
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    </ion-list> -->

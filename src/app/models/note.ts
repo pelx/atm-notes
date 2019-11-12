@@ -4,7 +4,7 @@ export class Note {
         public lessonId: string,
         public lessonTitle: string,
         public collectionId: string,
-        public rating: string,
+        public position: string,
         public status: string,
         public level: string,
         public note: string,

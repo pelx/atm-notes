@@ -1,0 +1,14 @@
+[
+  {
+    "collectionId": "AY",
+    "title": "Alexander Yanai",
+    "description": "Developed and recorded by Dr. Feldenkrais in Israel between 1950-1970, the Alexander Yanai volumes contain the translation of 550 Awareness Through Movement® lessons originally taught in Hebrew. The complete set contains more than 4,000 pages of original teachings. This collection is a must have for any teacher or trainee of the Feldenkrais Method®.",
+    "imageUrl": "gs://atm-notes.appspot.com/pictures/ay-collection.png"
+  },
+  {
+    "collectionId": "Esalen",
+    "title": "Easalen Workshop 1972",
+    "description": "These 46 audio files are a remarkable document of Dr Feldenkrais’ teaching in his prime. They are clear, concise and powerful. Lessons vary widely from simple and elegant to complex and challenging. They are both a rewarding introduction to the Feldenkrais Method® created by Moshe Feldenkrais, as well as a rich resource for practitioners seeking to enhance their understanding of Awareness Through Movement. Lesson titles available in the Contents tab below.",
+    "imageUrl": "gs://atm-notes.appspot.com/pictures/easalen-1972-workshop.png"
+  }
+]

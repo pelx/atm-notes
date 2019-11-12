@@ -3,13 +3,10 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'atms', pathMatch: 'full' },
+    { path: '', redirectTo: 'atms', pathMatch: 'full', },
     { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
-    {
-        path: 'atms',
-        loadChildren: './atms/atms.module#AtmsPageModule',
-        canLoad: [AuthGuard]
-    }
+    // { path: 'atms', loadChildren: '../app/atms/collections/collections.module#CollectionsPageModule', canLoad: [AuthGuard] },
+    { path: 'atms', loadChildren: './atms/atms.module#AtmsPageModule', canLoad: [AuthGuard] },
 ];
 
 @NgModule({

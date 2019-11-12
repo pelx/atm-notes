@@ -1,6 +1,6 @@
 export class Collection {
     constructor(
-        public id: string,
+        public collectionId: string,
         public title: string,
         public description: string,
         public imageUrl: string

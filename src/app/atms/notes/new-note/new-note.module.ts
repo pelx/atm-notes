@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { NewNotePage } from './new-note.page';
+import { DataService } from '../../../shared/data.service';
 
 const routes: Routes = [
     {
@@ -21,6 +22,8 @@ const routes: Routes = [
         IonicModule,
         RouterModule.forChild(routes)
     ],
-    declarations: [NewNotePage]
+    declarations: [NewNotePage],
+    // providers: [DataService]
+
 })
 export class NewNotePageModule { }
