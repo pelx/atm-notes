@@ -67,7 +67,7 @@ export class NotesPage implements OnInit, OnDestroy {
             this.notesService.deleteNote(noteId).subscribe((notes) => {
                 loadingEl.dismiss();
                 this.loadedNotes = notes;
-                console.log("DELETE:", notes);
+                // console.log("DELETE:", notes);
                 this.isLoading = false;
                 this.dataSource = this.loadedNotes.filter(note => note.noteId !== noteId);
             });

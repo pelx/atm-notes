@@ -33,7 +33,7 @@ export class NewNotePage implements OnInit, OnDestroy {
             // console.log("New Note", lesson);
             this.isLoading = true;
 
-            console.log("New Note", this.selectedLesson);
+            // console.log("New Note", this.selectedLesson);
 
             const title = this.selectedLesson ? this.selectedLesson.lessonTitle : 'Test Lesson';
             const lessonId = this.selectedLesson ? this.selectedLesson.lessonId : '000';

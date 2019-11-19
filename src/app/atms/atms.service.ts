@@ -1,8 +1,6 @@
 import { AuthService } from 'src/app/auth/auth.service';
 import { Injectable } from '@angular/core';
-import { Collection } from '../models/collection';
 import { Lesson } from '../models/lesson';
-import { Note } from '../models/note';
 import { BehaviorSubject } from 'rxjs';
 import { take, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';

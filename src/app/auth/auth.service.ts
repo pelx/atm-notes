@@ -115,7 +115,10 @@ export class AuthService implements OnDestroy {
         return from(Plugins.Storage.get({ key: 'authData' }))
             .pipe(
                 map(storedData => {
-                    if (!storedData || !storedData.valueOf()) {
+                    if ((!storedData || !storedData.value)) {
+
+                        // if (!storedData || storedData.valueOf() == null) {
+
                         return null;
                     }
                     const parsedData = JSON.parse(storedData.value) as
@@ -125,6 +128,7 @@ export class AuthService implements OnDestroy {
                             tokenExpiryDate: string,
                             userId: string
                         };
+                    // console.log("STORE DATA: ", storedData.valueOf());
                     const expiryTime = new Date(parsedData.tokenExpiryDate);
                     if (expiryTime <= new Date()) {
                         return null;

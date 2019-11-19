@@ -1,12 +1,14 @@
+import { AngularFireStorage } from '@angular/fire/storage';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { take, map, tap, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Collection } from '../../models/collection';
 
+
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class CollectionsService {
     private _collections = new BehaviorSubject<Collection[]>([]);
@@ -30,7 +32,8 @@ export class CollectionsService {
 
     constructor(
         private authService: AuthService,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        private fireStorage: AngularFireStorage) { }
 
     get collections() {
         // return [...this._collections];
@@ -46,15 +49,23 @@ export class CollectionsService {
                     .pipe(
                         take(1),
                         map(resData => {
+
                             const collections = [];
+                            let urlRef: Promise<string>;
                             for (const key in resData) {
                                 if (resData.hasOwnProperty(key)) {
+                                    urlRef = this.fireStorage.ref("pictures")
+                                        .child(resData[key].imageUrl.toString())
+                                        .getDownloadURL().toPromise();
+                                    // console.log("URL: ", urlRef);
                                     collections.push(new Collection(
                                         resData[key].collectionId,
                                         resData[key].title,
                                         resData[key].description,
-                                        resData[key].imageUrl)
-                                    );
+                                        // resData[key].imageUrl
+                                        urlRef
+                                    ));
+
                                 }
                             }
                             return collections;
@@ -72,7 +83,7 @@ export class CollectionsService {
         return this.collections.pipe(
             take(1),
             map(collections => {
-                console.log("GET COLLECTIONS BY ID: ", this.collections);
+                // console.log("GET COLLECTIONS BY ID: ", this.collections);
                 return { ...collections.find(col => col.collectionId === id) };
             }));
         // return {...this._collections.find(collection => collection.id === id)};

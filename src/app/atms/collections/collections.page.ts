@@ -22,25 +22,25 @@ export class CollectionsPage implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        // this.isLoading = true;
-        // this.subs = this.collectionsService.collections
-        //     .subscribe(cols => {
-        //         this.loadedCollections = cols;
-        //         this.relevantCollections = this.loadedCollections;
-        //         this.listedCollections = this.loadedCollections.slice(1);
-        //         this.isLoading = false;
-        //     });
-
-    }
-
-    ionViewWillEnter() {
         this.isLoading = true;
         this.subs = this.collectionsService.fetchCollections().subscribe(cols => {
             this.loadedCollections = cols;
             this.relevantCollections = this.loadedCollections;
             this.listedCollections = this.loadedCollections.slice(1);
             this.isLoading = false;
+            // console.log("COLLECTIONS", this.loadedCollections);
         });
+
+    }
+
+    ionViewWillEnter() {
+        // this.isLoading = true;
+        // this.subs = this.collectionsService.fetchCollections().subscribe(cols => {
+        //     this.loadedCollections = cols;
+        //     this.relevantCollections = this.loadedCollections;
+        //     this.listedCollections = this.loadedCollections.slice(1);
+        //     this.isLoading = false;
+        // });
     }
 
     onOpenMenu() {

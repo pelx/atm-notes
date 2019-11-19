@@ -3,6 +3,6 @@ export class Collection {
         public collectionId: string,
         public title: string,
         public description: string,
-        public imageUrl: string
+        public imageUrl: Promise<string>
     ) { }
 }

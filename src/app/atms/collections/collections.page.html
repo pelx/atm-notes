@@ -62,7 +62,7 @@
                     <ion-item>
                         <ion-img
                             class="img-show"
-                            [src]="relevantCollections[0].imageUrl"
+                            [src]="relevantCollections[0].imageUrl | async "
                         ></ion-img>
                     </ion-item>
                     <ion-card-content
@@ -112,7 +112,7 @@
                         detail
                     >
                         <ion-thumbnail slot="start">
-                            <ion-img [src]="collection.imageUrl"></ion-img>
+                            <ion-img [src]="collection.imageUrl  | async"></ion-img>
                         </ion-thumbnail>
                         <ion-label>{{ collection.title}}</ion-label>
 

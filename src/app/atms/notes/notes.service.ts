@@ -265,8 +265,6 @@ export class NotesService {
             }),
             take(1),
             tap(notes => {
-                console.log("notes", noteId);
-                console.log("notes", notes);
                 this._notes.next(notes.filter(note => note.noteId !== noteId));
             })
         );
