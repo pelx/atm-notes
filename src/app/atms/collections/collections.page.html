@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-segment
+    <!-- <ion-segment
         class="ion-padding"
         (ionChange)="onFilterUpdate($event)"
     >
@@ -19,8 +19,7 @@
             All Collections
         </ion-segment-button>
         <ion-segment-button value="filtered">Collections with Notes</ion-segment-button>
-    </ion-segment>
-
+    </ion-segment> -->
     <!-- <ion-grid *ngIf="!relevantCollections || relevantCollections.length <=0 ">
         <ion-row>
             <ion-col
@@ -61,6 +60,7 @@
                     </ion-card-header>
                     <ion-item>
                         <ion-img
+                            (mouseover)="showDescription(relevantCollections[0].description)"
                             class="img-show"
                             [src]="relevantCollections[0].imageUrl | async "
                         ></ion-img>
@@ -112,7 +112,10 @@
                         detail
                     >
                         <ion-thumbnail slot="start">
-                            <ion-img [src]="collection.imageUrl  | async"></ion-img>
+                            <ion-img
+                                (mouseover)="showDescription(collection.description)"
+                                [src]="collection.imageUrl  | async"
+                            ></ion-img>
                         </ion-thumbnail>
                         <ion-label>{{ collection.title}}</ion-label>
 

@@ -62,7 +62,6 @@ export class CollectionPage implements OnInit, OnDestroy {
                         .getCollectionById(this.collectionId)
                         .subscribe(collection => {
                             this.collection = collection;
-                            console.log("LOAD LESSONS: ", this.collectionId);
                         })
                 });
                 this.lessonsSub = this.atmsService.
@@ -103,7 +102,6 @@ export class CollectionPage implements OnInit, OnDestroy {
                         .getCollectionById(this.collectionId)
                         .subscribe(collection => {
                             this.collection = collection;
-                            console.log("LOAD LESSONS: ", this.collectionId);
                         })
                 });
                 this.lessonsSub = this.atmsService.

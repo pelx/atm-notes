@@ -78,6 +78,10 @@ export class NotesPage implements OnInit, OnDestroy {
         this.router.navigate(['/', 'atms', 'tabs', 'notes', 'edit', noteId]);
     }
 
+    onSave() {
+
+    }
+
     applyFilter(filterVal: string) {
         this.dataSource.filter = filterVal.trim().toLocaleLowerCase();
     }

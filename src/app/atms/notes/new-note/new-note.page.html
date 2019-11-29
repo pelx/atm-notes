@@ -23,36 +23,32 @@
         <ion-grid>
             <ion-row>
                 <ion-col
-                    size-sm="6"
-                    offset-sm="3"
+                    offset-sm="2"
+                    size-sm="4"
                 >
-                    <ion-item>
-                        <ion-input
-                            color="primary"
-                            readonly
-                            formControlName="collectionId"
-                        ></ion-input>
-                    </ion-item>
+
+                    <ion-input
+                        class="ion-padding"
+                        color="primary"
+                        readonly
+                        formControlName="collectionId"
+                    ></ion-input>
                 </ion-col>
+                <ion-col size-sm="4">
+                    <ion-input
+                        class="ion-padding"
+                        color="primary"
+                        readonly
+                        formControlName="lessonId"
+                        max="10"
+                    ></ion-input>
+                </ion-col>
+
             </ion-row>
             <ion-row>
                 <ion-col
-                    class="ion-no-padding"
-                    size-sm="1"
-                    offset-sm="3"
-                >
-                    <ion-item>
-                        <ion-input
-                            color="primary"
-                            readonly
-                            formControlName="lessonId"
-                            max="10"
-                        ></ion-input>
-                    </ion-item>
-                </ion-col>
-                <ion-col
-                    size-sm="5"
-                    class="ion-no-padding"
+                    size-sm="6"
+                    offset-sm="2"
                 >
                     <ion-item>
                         <ion-input
@@ -68,7 +64,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="3"
+                    offset-sm="2"
                 >
                     <ion-item>
                         <ion-label
@@ -90,7 +86,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="3"
+                    offset-sm="2"
                 >
                     <ion-item>
                         <ion-label
@@ -114,7 +110,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="3"
+                    offset-sm="2"
                 >
                     <ion-item>
                         <ion-label
@@ -140,26 +136,27 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="3"
+                    offset-sm="2"
                 >
-                    <ion-item>
-                        <ion-label
-                            color="primary"
-                            position="floating"
-                        >
-                            Note
-                        </ion-label>
-                        <ion-textarea
-                            formControlName="note"
-                            rows="10"
-                            autocomplete
-                            autocorrect
-                            auto-grow
-                        ></ion-textarea>
-                    </ion-item>
+                    <ion-card>
+                        <ion-item>
+                            <ion-label
+                                color="primary"
+                                position="floating"
+                            >
+                                Note
+                            </ion-label>
+                            <ion-textarea
+                                formControlName="note"
+                                rows="10"
+                                autocomplete
+                                autocorrect
+                                auto-grow
+                            ></ion-textarea>
+                        </ion-item>
+                    </ion-card>
                 </ion-col>
             </ion-row>
-
         </ion-grid>
     </form>
 </ion-content>

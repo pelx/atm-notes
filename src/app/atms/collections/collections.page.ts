@@ -4,6 +4,8 @@ import { CollectionsService } from './collections.service';
 // import { MenuController } from '@ionic/angular';
 import { SegmentChangeEventDetail } from '@ionic/core';
 import { Subscription } from 'rxjs';
+import { PopoverController } from '@ionic/angular';
+import { PopupTextPage } from 'src/app/shared/pages/popup-text/popup-text.page';
 
 @Component({
     selector: 'app-collections',
@@ -19,6 +21,7 @@ export class CollectionsPage implements OnInit, OnDestroy {
 
     constructor(
         private collectionsService: CollectionsService,
+        private popoverCtrl: PopoverController
     ) { }
 
     ngOnInit() {
@@ -56,6 +59,17 @@ export class CollectionsPage implements OnInit, OnDestroy {
         }
         // console.log(event.detail);
     }
+
+    async showDescription(text: any) {
+        const popover = await this.popoverCtrl.create({
+            component: PopupTextPage,
+            componentProps: { text },
+            backdropDismiss: true,
+        });
+        await popover.present();
+        // popover.onDidDismiss((remove: false) => { });
+    }
+
     ngOnDestroy() {
         if (this.subs) this.subs.unsubscribe();
     }

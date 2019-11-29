@@ -1,0 +1,23 @@
+<ion-content class="ion-text-center">
+    <ion-card class="ion-padding">
+        <ion-text color="primary">
+            <p>{{ text }}</p>
+        </ion-text>
+
+    </ion-card>
+    <ion-row>
+        <ion-col>
+            <ion-button
+                (click)="onClose()"
+                fill="clear"
+                color="primary"
+            >
+                <ion-icon
+                    slot="icon-only"
+                    name="close"
+                ></ion-icon>
+            </ion-button>
+
+        </ion-col>
+    </ion-row>
+</ion-content>

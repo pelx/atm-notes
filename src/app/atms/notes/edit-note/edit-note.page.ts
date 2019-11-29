@@ -45,9 +45,9 @@ export class EditNotePage implements OnInit, OnDestroy {
                     // console.log(note)
                     this.note = note;
                     this.form = new FormGroup({
-                        lessonTitle: new FormControl(this.note.lessonTitle),
-                        lessonId: new FormControl(this.note.lessonId),
                         collectionId: new FormControl(this.note.collectionId),
+                        lessonId: new FormControl(this.note.lessonId),
+                        lessonTitle: new FormControl(this.note.lessonTitle),
                         position: new FormControl(this.note.position, {
                             updateOn: 'blur',
                             validators: [Validators.required]

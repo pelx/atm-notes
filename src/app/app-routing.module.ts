@@ -8,6 +8,7 @@ const routes: Routes = [
     { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
     // { path: 'atms', loadChildren: '../app/atms/collections/collections.module#CollectionsPageModule', canLoad: [AuthGuard] },
     { path: 'atms', loadChildren: './atms/atms.module#AtmsPageModule', canLoad: [AuthGuard] },
+
 ];
 
 @NgModule({
