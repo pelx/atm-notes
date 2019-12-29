@@ -3,9 +3,11 @@ import { Collection } from '../../models/collection';
 import { CollectionsService } from './collections.service';
 // import { MenuController } from '@ionic/angular';
 import { SegmentChangeEventDetail } from '@ionic/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { PopoverController } from '@ionic/angular';
 import { PopupTextPage } from 'src/app/shared/pages/popup-text/popup-text.page';
+import { AuthService } from '../../auth/auth.service';
+import { User } from '../../models/user';
 
 @Component({
     selector: 'app-collections',
@@ -18,13 +20,17 @@ export class CollectionsPage implements OnInit, OnDestroy {
     loadedCollections: Collection[];
     relevantCollections: Collection[];
     listedCollections: Collection[];
+    user;
 
     constructor(
         private collectionsService: CollectionsService,
-        private popoverCtrl: PopoverController
+        private popoverCtrl: PopoverController,
+        private auth: AuthService
     ) { }
 
     ngOnInit() {
+        this.user = this.auth.userName;
+        // console.log("NAME: ", this.user);
         this.isLoading = true;
         this.subs = this.collectionsService.fetchCollections().subscribe(cols => {
             this.loadedCollections = cols;

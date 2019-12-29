@@ -130,22 +130,6 @@ export class NotesService {
                 return this.http.get<NoteData>(`${this.notesUrl}/${noteId}.json?auth=${token}`)
             }),
             map(noteData => {
-                // const note = new Note(
-                //     noteId,
-                //     noteData.lessonId,
-                //     noteData.lessonTitle,
-                //     noteData.collectionId,
-                //     noteData.position,
-                //     noteData.status,
-                //     noteData.level,
-                //     noteData.note,
-                //     new Date(noteData.createdOn),
-                //     new Date(noteData.updatedOn),
-                //     noteData.userId
-                // );
-                // console.log("NOTEDATA: ", note);
-                // return note;
-
                 return new Note(noteId,
                     noteData.lessonId,
                     noteData.lessonTitle,
@@ -160,41 +144,6 @@ export class NotesService {
             }))
     }
 
-    // return this.http
-    //                 .get<{ [key: string]: NoteData }>(`${this.notesUrl}.json?auth=${token}orderBy="userId"&&equalTo="${this.authService.userId}"`
-    //                 );
-    //         }),
-    //         map(resData => {
-    //             const notes: any = [];
-    //             for (const key in resData) {
-    //                 if (resData.hasOwnProperty(key)) {
-    //                     notes.push(new Note(
-    //                         key,
-    //                         resData[key].lessonId,
-    //                         resData[key].lessonTitle,
-    //                         resData[key].collectionId,
-    //                         resData[key].position,
-    //                         resData[key].status,
-    //                         resData[key].level,
-    //                         resData[key].note,
-    //                         new Date(resData[key].createdOn),
-    //                         new Date(resData[key].updatedOn),
-    //                         resData[key].userId
-    //                     )
-    //                     );
-    //                 }
-    //     collectionId: "Esalen"
-    // createdOn: "2019-11-28T10:22:16.551Z"
-    // lessonId: "ES 4"
-    // lessonTitle: "Four Cardinal Points of Support on Hands & Feet, Sitting to the Right and Left"
-    // level: "4"
-    // note: "Esalen: Lifting head, legs, arms. Aeroplane like lesson with lifting of  head with chick on the hand in variations combinations and the legs... Love these movements. When in sphinx allow the elbows to move and notice see-saw movement of the shoulders."
-    // position: "2"
-    // status: "Done"
-    // updatedOn: "2019-11-28T10:22:16.551Z"
-    // userId: "FAsj0SXyfNfVmDTokHCNswGxpeu1"
-
-    //             }
 
     addNote(
         lessonTitle: string,

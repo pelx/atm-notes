@@ -5,7 +5,7 @@
         </ion-buttons>
         <ion-title>ATM Notes</ion-title>
         <ion-buttons slot="primary">
-            <ion-button (click)="onSave()">
+            <ion-button (click)="exporter.exportTable('csv')">
                 <ion-icon
                     name="save"
                     slot="icon-only"
@@ -97,6 +97,8 @@
                 <table
                     mat-table
                     [dataSource]="dataSource"
+                    matTableExporter
+                    #exporter="matTableExporter"
                     class="mat-elevation-z8"
                     matSort
                 >

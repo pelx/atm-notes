@@ -5,6 +5,7 @@ import { IonItemSliding, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MAT_TABLE_EXPORTER } from 'mat-table-exporter';
 
 @Component({
     selector: 'app-notes',
@@ -16,7 +17,7 @@ export class NotesPage implements OnInit, OnDestroy {
     private subs: Subscription;
     isLoading = false;
     displayedColumns: string[] = ['lessonId', 'lessonTitle', 'actions'];
-    dataSource: any;
+    dataSource: MatTableDataSource<Note>;
 
     @ViewChild(MatSort, { static: false }) sort: MatSort;
     @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
@@ -24,7 +25,8 @@ export class NotesPage implements OnInit, OnDestroy {
     constructor(
         private notesService: NotesService,
         private router: Router,
-        private loadingCtrl: LoadingController
+        private loadingCtrl: LoadingController,
+
     ) { }
 
     ngOnInit() {
@@ -69,7 +71,7 @@ export class NotesPage implements OnInit, OnDestroy {
                 this.loadedNotes = notes;
                 // console.log("DELETE:", notes);
                 this.isLoading = false;
-                this.dataSource = this.loadedNotes.filter(note => note.noteId !== noteId);
+                this.dataSource = new MatTableDataSource<Note>(this.loadedNotes.filter(note => note.noteId !== noteId));
             });
         })
     }
@@ -78,7 +80,11 @@ export class NotesPage implements OnInit, OnDestroy {
         this.router.navigate(['/', 'atms', 'tabs', 'notes', 'edit', noteId]);
     }
 
-    onSave() {
+    ExportTable() {
+        // exporter.exportTable('csv');
+        this.loadedNotes.forEach(note => {
+            console.log(note.lessonId, ",", note.lessonTitle, ",", note.createdOn.toISOString().substr(0, 10), ",", note.note);
+        });
 
     }
 

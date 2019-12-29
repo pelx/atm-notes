@@ -25,7 +25,7 @@ import { environment } from 'src/environments/environment';
         HttpClientModule,
         NoopAnimationsModule,
         AngularFireModule.initializeApp(environment.firebase),
-        AngularFireStorageModule
+        AngularFireStorageModule,
     ],
 
     providers: [
