@@ -25,6 +25,25 @@ export class NotesService {
     private notesUrl = 'https://atm-notes.firebaseio.com/notes';
     private _notes = new BehaviorSubject<Note[]>([]);
 
+    private _positions = [
+        { value: 1, position: 'Back' },
+        { value: 2, position: 'Front' },
+        { value: 3, position: 'Side' },
+        { value: 4, position: 'Chair Sitting' },
+        { value: 5, position: 'Standing' },
+        { value: 6, position: 'Side Legs in Chair' },
+        { value: 7, position: 'Side Legs Long' },
+        { value: 8, position: 'Kneeling' },
+        { value: 9, position: 'All Fours' },
+        { value: 10, position: 'Side Sitting' },
+        { value: 11, position: 'Indian Sitting' },
+    ];
+
+    getPositions() {
+        return this._positions;
+    }
+
+
 
     constructor(
         private authService: AuthService,

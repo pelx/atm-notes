@@ -5,7 +5,7 @@
         </ion-buttons>
         <ion-title>ATM Notes</ion-title>
         <ion-buttons slot="primary">
-            <ion-button (click)="exporter.exportTable('csv')">
+            <ion-button (click)="exportTable()">
                 <ion-icon
                     name="save"
                     slot="icon-only"
@@ -107,6 +107,7 @@
                             mat-sort-header
                             mat-header-cell
                             *matHeaderCellDef
+                            class="lessonId"
                         >
                             Lesson
                         </th>
@@ -137,6 +138,7 @@
                         <th
                             mat-header-cell
                             *matHeaderCellDef
+                            class="actions"
                         >
                             Edit/Delete
                         </th>
@@ -183,7 +185,7 @@
         </ion-row>
     </ion-grid>
     <mat-paginator
-        [pageSizeOptions]="[3, 5, 10]"
+        [pageSizeOptions]="[10, 20, 30]"
         showFirstLastButtons
     ></mat-paginator>
 

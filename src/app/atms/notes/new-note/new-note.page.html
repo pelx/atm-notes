@@ -7,7 +7,7 @@
         <ion-buttons slot="primary">
             <ion-button
                 (click)="onCreateNote()"
-                [disabled]="form.invalid"
+                [disabled]="form?.invalid"
             >
                 <ion-icon
                     name="checkmark"
@@ -22,33 +22,39 @@
     <form [formGroup]="form">
         <ion-grid>
             <ion-row>
-                <ion-col
+                <!-- <ion-col
                     offset-sm="2"
                     size-sm="4"
                 >
+                    <ion-item>
+                        <ion-input
+                            class="ion-padding"
+                            color="primary"
+                            readonly
+                            formControlName="collectionId"
+                        ></ion-input>
+                    </ion-item>
 
-                    <ion-input
-                        class="ion-padding"
-                        color="primary"
-                        readonly
-                        formControlName="collectionId"
-                    ></ion-input>
+                </ion-col> -->
+                <ion-col
+                    size-sm="6"
+                    offset-sm="3"
+                >
+                    <ion-item>
+                        <ion-input
+                            class="ion-padding"
+                            color="primary"
+                            readonly
+                            formControlName="lessonId"
+                            max="10"
+                        ></ion-input>
+                    </ion-item>
                 </ion-col>
-                <ion-col size-sm="4">
-                    <ion-input
-                        class="ion-padding"
-                        color="primary"
-                        readonly
-                        formControlName="lessonId"
-                        max="10"
-                    ></ion-input>
-                </ion-col>
-
             </ion-row>
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-item>
                         <ion-input
@@ -64,7 +70,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-item>
                         <ion-label
@@ -86,7 +92,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-item>
                         <ion-label
@@ -100,7 +106,7 @@
                             formControlName="level"
                         >
                             <ion-select-option value="1">Easy</ion-select-option>
-                            <ion-select-option value="2">Intermidiate</ion-select-option>
+                            <ion-select-option value="2">Intermediate</ion-select-option>
                             <ion-select-option value="3">Advanced</ion-select-option>
                             <ion-select-option value="4">Expert</ion-select-option>
                         </ion-select>
@@ -110,7 +116,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-item>
                         <ion-label
@@ -123,17 +129,12 @@
                             interface="popover"
                             formControlName="position"
                         >
-                            <ion-select-option value="1">Back</ion-select-option>
-                            <ion-select-option value="2">Front</ion-select-option>
-                            <ion-select-option value="3">Side</ion-select-option>
-                            <ion-select-option value="4">Side-inline</ion-select-option>
-                            <ion-select-option value="5">Side-chair</ion-select-option>
-                            <ion-select-option value="6">Kneeling</ion-select-option>
-                            <ion-select-option value="7">All-fours</ion-select-option>
-                            <ion-select-option value="8">Standing</ion-select-option>
-                            <ion-select-option value="9">Sitting-chair</ion-select-option>
-                            <ion-select-option value="10">Sitting-floor</ion-select-option>
-                            <ion-select-option value="11">Saddle-sitting</ion-select-option>
+                            <ion-select-option
+                                *ngFor="let pos of positions"
+                                value="{{pos.value}}"
+                            >
+                                {{pos.position}}
+                            </ion-select-option>
 
                         </ion-select>
                     </ion-item>
@@ -143,7 +144,7 @@
             <ion-row>
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-card>
                         <ion-item>
@@ -151,7 +152,7 @@
                                 color="primary"
                                 position="floating"
                             >
-                                Note
+                                Lesson Note
                             </ion-label>
                             <ion-textarea
                                 formControlName="note"

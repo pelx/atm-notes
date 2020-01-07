@@ -18,6 +18,7 @@ export class NewNotePage implements OnInit, OnDestroy {
     form: FormGroup;
     private subs: Subscription;
     isLoading = false;
+    positions: any = [];
 
     constructor(
         private dataService: DataService,
@@ -28,6 +29,7 @@ export class NewNotePage implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        this.positions = this.notesService.getPositions();
         this.subs = this.dataService.changedLesson.subscribe(lesson => {
             this.selectedLesson = lesson;
             // console.log("New Note", lesson);

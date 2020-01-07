@@ -19,11 +19,12 @@ export class EditNotePage implements OnInit, OnDestroy {
     form: FormGroup;
     isLoading = false;
     noteId: string;
+    positions: any = [];
 
     constructor(
         private route: ActivatedRoute,
         private navCtrl: NavController,
-        private notesServise: NotesService,
+        private notesService: NotesService,
         private router: Router,
         private loadingCtrl: LoadingController,
         private alertCtrl: AlertController,
@@ -31,6 +32,7 @@ export class EditNotePage implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
+        this.positions = this.notesService.getPositions();
         this.route.paramMap.subscribe(param => {
             if (!param.has('noteId')) {
                 // this.navCtrl.navigateBack('/atms/tabs/notes');
@@ -40,7 +42,7 @@ export class EditNotePage implements OnInit, OnDestroy {
             this.noteId = param.get('noteId');
             this.isLoading = true;
 
-            this.subs = this.notesServise.getNote(this.noteId)
+            this.subs = this.notesService.getNote(this.noteId)
                 .subscribe(note => {
                     // console.log(note)
                     this.note = note;
@@ -69,7 +71,7 @@ export class EditNotePage implements OnInit, OnDestroy {
                 },
                     error => {
                         this.alertCtrl.create({
-                            header: 'An error occured!',
+                            header: 'An error occurred!',
                             message: 'Note could not be fetched. Please try again later',
                             buttons: [{
                                 text: 'Okay',
@@ -85,18 +87,20 @@ export class EditNotePage implements OnInit, OnDestroy {
                 );
 
         });
-        // this.note = this.notesServise.getNote(param.get('noteId'));
+        // this.note = this.notesService.getNote(param.get('noteId'));
     }
 
     onUpdateNote() {
-        if (this.form.invalid) return;
+        if (this.form.invalid) {
+            return;
+        }
 
         this.loadingCtrl.create({
             message: 'Updating Notes...'
         })
             .then(loadingEl => {
                 loadingEl.present();
-                this.notesServise
+                this.notesService
                     .updateNote(
                         this.note.noteId,
                         this.form.value.position,
@@ -113,7 +117,9 @@ export class EditNotePage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.subs) this.subs.unsubscribe();
+        if (this.subs) {
+            this.subs.unsubscribe();
+        }
     }
 
 }

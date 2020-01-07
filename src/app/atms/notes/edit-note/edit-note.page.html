@@ -32,9 +32,9 @@
     >
         <ion-grid>
             <ion-row>
-                <ion-col
-                    size-sm="4"
+                <!-- <ion-col
                     offset-sm="2"
+                    size-sm="4"
                 >
                     <ion-item>
                         <ion-input
@@ -44,8 +44,11 @@
                             class="ion-padding"
                         ></ion-input>
                     </ion-item>
-                </ion-col>
-                <ion-col size-sm="4">
+                </ion-col> -->
+                <ion-col
+                    size-sm="6"
+                    offset-sm="3"
+                >
                     <ion-item>
                         <ion-input
                             readonly
@@ -61,7 +64,7 @@
 
                 <ion-col
                     size-sm="6"
-                    offset-sm="2"
+                    offset-sm="3"
                 >
                     <ion-item>
                         <ion-input
@@ -113,7 +116,7 @@
                             interface="popover"
                         >
                             <ion-select-option value="1">Easy</ion-select-option>
-                            <ion-select-option value="2">Intermidiate</ion-select-option>
+                            <ion-select-option value="2">Intermediate</ion-select-option>
                             <ion-select-option value="3">Advanced</ion-select-option>
                             <ion-select-option value="4">Expert</ion-select-option>
                         </ion-select>
@@ -136,11 +139,13 @@
                             formControlName="position"
                             interface="popover"
                         >
-                            <ion-select-option value="1">Back</ion-select-option>
-                            <ion-select-option value="2">Front</ion-select-option>
-                            <ion-select-option value="3">Side-strait</ion-select-option>
-                            <ion-select-option value="4">Side-chair</ion-select-option>
-                            <ion-select-option value="5">Side-kneel</ion-select-option>
+                            <ion-select-option
+                                *ngFor="let pos of positions"
+                                value="{{pos.value}}"
+                            >
+                                {{pos.position}}
+                            </ion-select-option>
+
                         </ion-select>
                     </ion-item>
                 </ion-col>
@@ -151,24 +156,25 @@
                     size-sm="6"
                     offset-sm="3"
                 >
-                    <ion-item>
-                        <ion-label
-                            color="primary"
-                            position="floating"
-                        >
-                            Lesson Note
-                        </ion-label>
-                        <ion-textarea
-                            class="ion-padding"
-                            formControlName="note"
-                            rows="10"
-                            autocomplete
-                            autocorrect
-                        ></ion-textarea>
-                    </ion-item>
+                    <ion-card>
+                        <ion-item>
+                            <ion-label
+                                color="primary"
+                                position="floating"
+                            >
+                                Lesson Note
+                            </ion-label>
+                            <ion-textarea
+                                formControlName="note"
+                                rows="10"
+                                autocomplete
+                                autocorrect
+                                auto-grow
+                            ></ion-textarea>
+                        </ion-item>
+                    </ion-card>
                 </ion-col>
             </ion-row>
-
         </ion-grid>
     </form>
 </ion-content>

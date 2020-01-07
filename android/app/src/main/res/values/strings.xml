@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">atmnotes</string>
-    <string name="title_activity_main">atmnotes</string>
+    <string name="app_name">AtmNotes</string>
+    <string name="title_activity_main">AtmNotes</string>
     <string name="package_name">com.atmovement.atmnotes</string>
     <string name="fileprovider_authority">com.atmovement.atmnotes.fileprovider</string>
     <string name="custom_url_scheme">com.atmovement.atmnotes</string>

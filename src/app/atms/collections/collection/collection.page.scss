@@ -3,9 +3,18 @@ table {
   table-layout: fixed;
 }
 
-th, td {
+th,
+td {
   overflow: hidden;
   // width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.lessonId {
+  width: 6rem;
+}
+
+.actions {
+  width: 4rem;
 }
