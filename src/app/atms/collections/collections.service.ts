@@ -28,7 +28,7 @@ export class CollectionsService {
     // )
     //]
 
-    private collectionsUrl = "https://atm-notes.firebaseio.com/collections";
+    private collectionsUrl = 'https://atm-notes.firebaseio.com/collections';
 
     constructor(
         private authService: AuthService,

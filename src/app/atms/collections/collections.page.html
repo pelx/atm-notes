@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-menu-button menu="m1"></ion-menu-button>
+            <ion-menu-button menu="SideDrawer"></ion-menu-button>
         </ion-buttons>
         <ion-title class="ion-text-center">ATM Collections</ion-title>
     </ion-toolbar>
@@ -75,6 +75,7 @@
                     </ion-card-content>
                     <div>
                         <ion-button
+                            style="text-transform:none"
                             slot="center"
                             fill="clear"
                             color="primary"
@@ -86,7 +87,7 @@
                                 relevantCollections[0].collectionId
                             ]"
                         >
-                            Show Collection
+                            Show {{relevantCollections[0].title}}
                         </ion-button>
                     </div>
                 </ion-card>
@@ -101,6 +102,7 @@
             >
                 <ion-list>
                     <ion-item
+                        detail
                         *ngFor="let collection of listedCollections"
                         [routerLink]="[
                                 '/',
@@ -109,7 +111,6 @@
                                 'collections',
                                 collection.collectionId
                             ]"
-                        detail
                     >
                         <ion-thumbnail slot="start">
                             <ion-img
@@ -117,7 +118,9 @@
                                 [src]="collection.imageUrl  | async"
                             ></ion-img>
                         </ion-thumbnail>
-                        <ion-label>{{ collection.title}}</ion-label>
+                        <ion-label>
+                            <h2>{{ collection.title}}</h2>
+                        </ion-label>
 
                     </ion-item>
                 </ion-list>

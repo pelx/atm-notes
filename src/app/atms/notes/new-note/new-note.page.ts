@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotesService } from '../notes.service';

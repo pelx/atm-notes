@@ -30,14 +30,12 @@ export class CollectionsPage implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.user = this.auth.userName;
-        // console.log("NAME: ", this.user);
         this.isLoading = true;
         this.subs = this.collectionsService.fetchCollections().subscribe(cols => {
             this.loadedCollections = cols;
             this.relevantCollections = this.loadedCollections;
             this.listedCollections = this.loadedCollections.slice(1);
             this.isLoading = false;
-            // console.log("COLLECTIONS", this.loadedCollections);
         });
 
     }

@@ -6,133 +6,135 @@ import { take, map, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 
 interface LessonData {
-    lessonId: string;
-    collectionId: string;
-    lessonTitle: string;
+  lessonId: string;
+  collectionId: string;
+  lessonTitle: string;
 }
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class AtmsService {
-    private lessonsUrl = "https://atm-notes.firebaseio.com/lessons";
-    private _lessons = new BehaviorSubject<Lesson[]>([]);
+  private lessonsUrl = 'https://atm-notes.firebaseio.com/lessons';
+  private _lessons = new BehaviorSubject<Lesson[]>([]);
 
-    constructor(
-        private authService: AuthService,
-        private http: HttpClient
-    ) { }
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
-    get lessons() {
-        return this._lessons.asObservable();
-    }
+  get lessons() {
+    return this._lessons.asObservable();
+  }
 
-    fetchLessons() {
-        return this.authService.token.pipe(
-            take(1),
-            switchMap(token => {
-                // GET
-                return this.http
-                    .get<{ [key: string]: LessonData }>(`https://atm-notes.firebaseio.com/lessons.json?auth=${token}`)
-            }),
-            map(resData => {
-                const lessons = [];
-                for (const key in resData) {
-                    if (resData.hasOwnProperty(key)) {
-                        lessons.push(new Lesson(
-                            key,
-                            resData[key].lessonId,
-                            resData[key].collectionId,
-                            resData[key].lessonTitle,
-                        ))
-                    }
-                }
-                // return [];
-                return lessons;
-            }),
-            tap(lessons => {
-                this._lessons.next(lessons);
-            })
+  fetchLessons() {
+    return this.authService.token.pipe(
+      take(1),
+      switchMap((token) => {
+        // GET
+        return this.http.get<{ [key: string]: LessonData }>(
+          `https://atm-notes.firebaseio.com/lessons.json?auth=${token}`
         );
-    }
+      }),
+      map((resData) => {
+        const lessons = [];
+        for (const key in resData) {
+          if (resData.hasOwnProperty(key)) {
+            lessons.push(
+              new Lesson(
+                key,
+                resData[key].lessonId,
+                resData[key].collectionId,
+                resData[key].lessonTitle
+              )
+            );
+          }
+        }
+        // return [];
+        return lessons;
+      }),
+      tap((lessons) => {
+        this._lessons.next(lessons);
+      })
+    );
+  }
 
-    getLessonsByCollectionId(id: string) {
-        return this.lessons.pipe(
-            take(1),
-            map(lessons => {
-                return lessons.find(l => l.collectionId === id);
-            }));
-        //  return {...this._lessons.filter(lesson => lesson.collectionId === id)};
-    }
+  getLessonsByCollectionId(id: string) {
+    return this.lessons.pipe(
+      take(1),
+      map((lessons) => {
+        return lessons.find((l) => l.collectionId === id);
+      })
+    );
+    //  return {...this._lessons.filter(lesson => lesson.collectionId === id)};
+  }
 
-    fetchLessonsByCollectionId(id: string) {
-        return this.authService.token.pipe(
-            take(1),
-            switchMap(token => {
-                return this.http
-                    .get<{ [key: string]: LessonData }>(`${this.lessonsUrl}.json?orderBy="collectionId"&equalTo="${id}"&&auth=${token}`)
-                    .pipe(map(resData => {
-                        const lessons = [];
-                        for (const key in resData) {
-                            if (resData.hasOwnProperty(key)) {
-                                lessons.push(new Lesson(
-                                    key,
-                                    resData[key].lessonId,
-                                    resData[key].collectionId,
-                                    resData[key].lessonTitle
-                                ));
-                            }
-                        }
-
-                        return lessons;
-                    }),
-                        tap(lessons => {
-                            this._lessons.next(lessons);
-                        })
-                    );
-            })
-        );
-
-    }
-
-    addLesson(
-        lessonId: string,
-        collectionId: string,
-        lessonTitle: string,
-    ) {
-        let generatedId: string;
-        // let fetchedUserId: string;
-        let newLesson: Lesson;
-        return this.authService.userId.pipe(
-            take(1),
-            switchMap(userId => {
-                if (!userId) {
-                    throw new Error('No User Id found');
+  fetchLessonsByCollectionId(id: string) {
+    return this.authService.token.pipe(
+      take(1),
+      switchMap((token) => {
+        return this.http
+          .get<{ [key: string]: LessonData }>(
+            `${this.lessonsUrl}.json?orderBy="collectionId"&equalTo="${id}"&&auth=${token}`
+          )
+          .pipe(
+            map((resData) => {
+              const lessons = [];
+              for (const key in resData) {
+                if (resData.hasOwnProperty(key)) {
+                  lessons.push(
+                    new Lesson(
+                      key,
+                      resData[key].lessonId,
+                      resData[key].collectionId,
+                      resData[key].lessonTitle
+                    )
+                  );
                 }
-                // fetchedUserId = userId;
-                return this.authService.token;
-            }),
-            take(1),
-            switchMap(token => {
-                newLesson = new Lesson(
-                    Math.random().toString(),
-                    lessonId,
-                    collectionId,
-                    lessonTitle
-                );
-                return this.http.post<{ name: string }>(`https://atm-notes.firebaseio.com/lessons.json?auth=${token}`, { ...newLesson, id: null }
-                );
-            }),
-            switchMap(resData => {
-                generatedId = resData.name; //id generated by Firebase
-                return this.lessons
-            }),
-            take(1),
-            tap(lessons => {
-                newLesson.id = generatedId;
-                this._lessons.next(lessons.concat(newLesson));
-            }))
+              }
 
-    }
+              return lessons;
+            }),
+            tap((lessons) => {
+              this._lessons.next(lessons);
+            })
+          );
+      })
+    );
+  }
 
+  addLesson(lessonId: string, collectionId: string, lessonTitle: string) {
+    let generatedId: string;
+    // let fetchedUserId: string;
+    let newLesson: Lesson;
+    return this.authService.userId.pipe(
+      take(1),
+      switchMap((userId) => {
+        if (!userId) {
+          throw new Error('No User Id found');
+        }
+        // fetchedUserId = userId;
+        return this.authService.token;
+      }),
+      take(1),
+      switchMap((token) => {
+        newLesson = new Lesson(
+          Math.random().toString(),
+          lessonId,
+          collectionId,
+          lessonTitle
+        );
+        return this.http.post<{ name: string }>(
+          `https://atm-notes.firebaseio.com/lessons.json?auth=${token}`,
+          { ...newLesson, id: null }
+        );
+      }),
+      switchMap((resData) => {
+        generatedId = resData.name; //id generated by Firebase
+        return this.lessons;
+      }),
+      take(1),
+      tap((lessons) => {
+        newLesson.id = generatedId;
+        this._lessons.next(lessons.concat(newLesson));
+      })
+    );
+  }
 }

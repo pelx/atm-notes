@@ -47,7 +47,7 @@ export class CollectionPage implements OnInit, OnDestroy {
             .create({
                 keyboardClose: true,
                 message: 'Loading...',
-                spinner: "lines"
+                spinner: 'lines'
             })
             .then(loadingEl => {
                 loadingEl.present();
@@ -62,7 +62,7 @@ export class CollectionPage implements OnInit, OnDestroy {
                         .getCollectionById(this.collectionId)
                         .subscribe(collection => {
                             this.collection = collection;
-                        })
+                        });
                 });
                 this.lessonsSub = this.atmsService.
                     fetchLessonsByCollectionId(this.collectionId)
@@ -76,48 +76,49 @@ export class CollectionPage implements OnInit, OnDestroy {
                     });
                 this.isLoading = false;
                 loadingEl.dismiss();
-            })
+            });
 
     }
 
-    ionViewWillEnter() {
-        // LOAD LESSONS
-        this.isLoading = true;
-        this.loadingCtrl
-            .create({
-                keyboardClose: true,
-                message: 'Loading...',
-                spinner: "lines"
-            })
-            .then(loadingEl => {
-                loadingEl.present();
-                this.collectionSub = this.route.paramMap.subscribe(paramMap => {
-                    if (!paramMap.has('id')) {
-                        this.navCtrl.navigateBack('/atms/tabs/collections');
-                        return;
-                    }
-                    this.collectionId = paramMap.get('id');
-                    this.isLoading = true;
-                    this.collectionsService
-                        .getCollectionById(this.collectionId)
-                        .subscribe(collection => {
-                            this.collection = collection;
-                        })
-                });
-                this.lessonsSub = this.atmsService.
-                    fetchLessonsByCollectionId(this.collectionId)
-                    .subscribe(lessons => {
-                        this.lessons = lessons;
-                        this.isLoading = false;
-                        loadingEl.dismiss();
-                        this.dataSource = new MatTableDataSource<Lesson>(this.lessons);
-                        this.dataSource.paginator = this.paginator;
-                        this.dataSource.sort = this.sort;
-                    });
-                this.isLoading = false;
-                loadingEl.dismiss();
-            })
-    }
+    // ionViewWillEnter() {
+    //     // LOAD LESSONS
+    //     this.isLoading = true;
+    //     this.loadingCtrl
+    //         .create({
+    //             keyboardClose: true,
+    //             message: 'Loading...',
+    //             spinner: 'lines'
+    //         })
+    //         .then(loadingEl => {
+    //             loadingEl.present();
+    //             this.collectionSub = this.route.paramMap.subscribe(paramMap => {
+    //                 if (!paramMap.has('id')) {
+    //                     this.navCtrl.navigateBack('/atms/tabs/collections');
+    //                     return;
+    //                 }
+    //                 this.collectionId = paramMap.get('id');
+    //                 this.isLoading = true;
+    //                 this.collectionsService
+    //                     .getCollectionById(this.collectionId)
+    //                     .subscribe(collection => {
+    //                         this.collection = collection;
+    //                         this.collectionTitle = this.collection.title;
+    //                     });
+    //             });
+    //             this.lessonsSub = this.atmsService.
+    //                 fetchLessonsByCollectionId(this.collectionId)
+    //                 .subscribe(lessons => {
+    //                     this.lessons = lessons;
+    //                     this.isLoading = false;
+    //                     loadingEl.dismiss();
+    //                     this.dataSource = new MatTableDataSource<Lesson>(this.lessons);
+    //                     this.dataSource.paginator = this.paginator;
+    //                     this.dataSource.sort = this.sort;
+    //                 });
+    //             this.isLoading = false;
+    //             loadingEl.dismiss();
+    //         });
+    // }
 
     onCollectionClick(lesson: Lesson) {
         this.dataService.changeLesson(lesson);
@@ -143,8 +144,8 @@ export class CollectionPage implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.lessonsSub) this.lessonsSub.unsubscribe();
-        if (this.collectionSub) this.collectionSub.unsubscribe();
+        if (this.lessonsSub) { this.lessonsSub.unsubscribe(); }
+        if (this.collectionSub) { this.collectionSub.unsubscribe(); }
     }
 
 }
